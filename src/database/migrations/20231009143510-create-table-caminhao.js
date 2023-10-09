@@ -20,6 +20,11 @@ module.exports = {
       ano: {
         type: Sequelize.DATEONLY,
         allowNull: false
+      },
+      placa:{
+        type: Sequelize.TEXT,
+        allowNull: false,
+        unique:true
       }
      });
   },

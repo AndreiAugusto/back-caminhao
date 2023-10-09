@@ -1,26 +1,31 @@
 const { HttpHelper } = require('../utils/http-helper');
-const { CaminhaoModel } = require('../models/caminhao-model');
+const { MotoristaModel } = require('../models/motorista-model');
 const { Validates } = require('../utils/validates');
 
-class CaminhaoController {
+class MotoristaController {
     async create(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const { modelo, ano, placa } = request.body;
-            if (!modelo, !ano, !placa) return httpHelper.badRequest('Parâmetros inválidos!');
+            const { nomeMotorista, nascimento, nCarteira } = request.body;
 
             //verifica validade de data
-            const dataValida = Validates.validDate(ano);
+            const dataValida = Validates.validDate(nascimento);
             if(!dataValida){
                 return httpHelper.badRequest('Data inválida')
             }
 
-            const caminhao = await CaminhaoModel.create({modelo, ano, placa})
-            return httpHelper.created(caminhao);
+            if (!nomeMotorista, !nascimento, !nCarteira ) return httpHelper
+                .badRequest('Parâmetros inválidos!');
+
+            const motorista = await MotoristaModel.create({
+                nomeMotorista, nascimento, nCarteira
+            })
+            return httpHelper.created(motorista);
         } catch (error) {
             return httpHelper.internalError(error);
         }
     }
+
     async getAll(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
@@ -32,10 +37,10 @@ class CaminhaoController {
             } else {
               ordenacaoOpcoes = [['id', 'DESC']];
             }
-            const caminhoes = await CaminhaoModel.findAll({
+            const motoristas = await MotoristaModel.findAll({
                 order: ordenacaoOpcoes
             });
-            return httpHelper.ok(caminhoes);
+            return httpHelper.ok(motoristas);
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -46,11 +51,11 @@ class CaminhaoController {
         try {
             const { id } = request.params;
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
-            const caminhao = await CaminhaoModel.findOne(
+            const motorista = await MotoristaModel.findOne(
                 { where:{ id } }
             );
-            if(!caminhao) return httpHelper.notFound('Caminhão não encontrado!');
-            return httpHelper.ok(caminhao.toJSON());
+            if(!motorista) return httpHelper.notFound('Motorista não encontrado!');
+            return httpHelper.ok(motorista.toJSON());
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -61,11 +66,11 @@ class CaminhaoController {
         try {
             const { id } = request.params;
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
-            const caminhaoExists = await CaminhaoModel.findOne({ where: { id } });
-            if (!caminhaoExists) return httpHelper.notFound('Caminhao não encontrado!');
-            await CaminhaoModel.destroy({ where: { id } });
+            const motoristaExists = await MotoristaModel.findOne({ where: { id } });
+            if (!motoristaExists) return httpHelper.notFound('Motorista não encontrado!');
+            await MotoristaModel.destroy({ where: { id } });
             return httpHelper.ok({
-                message: 'Caminhão deletado com sucesso!'
+                message: 'Motorista deletado com sucesso!'
             })
         } catch (error) {
             return httpHelper.internalError(error);
@@ -76,31 +81,31 @@ class CaminhaoController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { modelo, ano, placa } = request.body;
+            const { nomeMotorista, nascimento, nCarteira } = request.body;
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
 
             //verifica validade de data
-            if(ano){
-                const dataValida = Validates.validDate(ano);
+            if(nascimento){
+                const dataValida = Validates.validDate(nascimento);
                 if(!dataValida){
                     return httpHelper.badRequest('Data inválida')
                 }
             }
-            const caminhaoExists = await CaminhaoModel.findByPk(id);
-            if (!caminhaoExists) return httpHelper.notFound('Caminhão não encontrado!');
-            await CaminhaoModel.update({ 
-                modelo, ano, placa
+            const motoristaExists = await MotoristaModel.findByPk(id);
+            if (!motoristaExists) return httpHelper.notFound('Motorista não encontrado!');
+            await MotoristaModel.update({ 
+                nomeMotorista, nascimento, nCarteira
              }, {
                 where: { id }
             });
             return httpHelper.ok({
-                message: 'Caminhao atualizado com sucesso!'
+                message: 'Motorista atualizado com sucesso!'
             });
         } catch (error) {
             return httpHelper.internalError(error);
         }
     }
+
 }
 
-
-module.exports = { CaminhaoController };
+module.exports = { MotoristaController };

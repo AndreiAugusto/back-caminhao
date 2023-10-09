@@ -1,26 +1,25 @@
 const { HttpHelper } = require('../utils/http-helper');
-const { CaminhaoModel } = require('../models/caminhao-model');
+const { OficinaModel } = require('../models/oficina-model');
 const { Validates } = require('../utils/validates');
 
-class CaminhaoController {
+class OficinaController {
     async create(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
-            const { modelo, ano, placa } = request.body;
-            if (!modelo, !ano, !placa) return httpHelper.badRequest('Parâmetros inválidos!');
+            const { nomeOficina } = request.body;
 
-            //verifica validade de data
-            const dataValida = Validates.validDate(ano);
-            if(!dataValida){
-                return httpHelper.badRequest('Data inválida')
-            }
+            if (!nomeOficina) return httpHelper
+                .badRequest('Parâmetros inválidos!');
 
-            const caminhao = await CaminhaoModel.create({modelo, ano, placa})
-            return httpHelper.created(caminhao);
+            const oficina = await OficinaModel.create({
+                nomeOficina
+            })
+            return httpHelper.created(oficina);
         } catch (error) {
             return httpHelper.internalError(error);
         }
     }
+
     async getAll(request, response) {
         const httpHelper = new HttpHelper(response);
         try {
@@ -32,10 +31,10 @@ class CaminhaoController {
             } else {
               ordenacaoOpcoes = [['id', 'DESC']];
             }
-            const caminhoes = await CaminhaoModel.findAll({
+            const oficinas = await OficinaModel.findAll({
                 order: ordenacaoOpcoes
             });
-            return httpHelper.ok(caminhoes);
+            return httpHelper.ok(oficinas);
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -46,11 +45,11 @@ class CaminhaoController {
         try {
             const { id } = request.params;
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
-            const caminhao = await CaminhaoModel.findOne(
+            const oficina = await OficinaModel.findOne(
                 { where:{ id } }
             );
-            if(!caminhao) return httpHelper.notFound('Caminhão não encontrado!');
-            return httpHelper.ok(caminhao.toJSON());
+            if(!oficina) return httpHelper.notFound('Oficina não encontrada!');
+            return httpHelper.ok(oficina.toJSON());
         } catch (error) {
             return httpHelper.internalError(error);
         }
@@ -61,11 +60,11 @@ class CaminhaoController {
         try {
             const { id } = request.params;
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
-            const caminhaoExists = await CaminhaoModel.findOne({ where: { id } });
-            if (!caminhaoExists) return httpHelper.notFound('Caminhao não encontrado!');
-            await CaminhaoModel.destroy({ where: { id } });
+            const oficinaExists = await OficinaModel.findOne({ where: { id } });
+            if (!oficinaExists) return httpHelper.notFound('Oficina não encontrada!');
+            await OficinaModel.destroy({ where: { id } });
             return httpHelper.ok({
-                message: 'Caminhão deletado com sucesso!'
+                message: 'Oficina deletada com sucesso!'
             })
         } catch (error) {
             return httpHelper.internalError(error);
@@ -76,31 +75,25 @@ class CaminhaoController {
         const httpHelper = new HttpHelper(response);
         try {
             const { id } = request.params;
-            const { modelo, ano, placa } = request.body;
+            const { nomeOficina } = request.body;
             if (!id) return httpHelper.badRequest('Parâmetros inválidos!');
 
-            //verifica validade de data
-            if(ano){
-                const dataValida = Validates.validDate(ano);
-                if(!dataValida){
-                    return httpHelper.badRequest('Data inválida')
-                }
-            }
-            const caminhaoExists = await CaminhaoModel.findByPk(id);
-            if (!caminhaoExists) return httpHelper.notFound('Caminhão não encontrado!');
-            await CaminhaoModel.update({ 
-                modelo, ano, placa
+            const oficinaExists = await OficinaModel.findByPk(id);
+            if (!oficinaExists) return httpHelper.notFound('Oficina não encontrada!');
+
+            await OficinaModel.update({ 
+                nomeOficina
              }, {
                 where: { id }
             });
             return httpHelper.ok({
-                message: 'Caminhao atualizado com sucesso!'
+                message: 'Oficina atualizada com sucesso!'
             });
         } catch (error) {
             return httpHelper.internalError(error);
         }
     }
+
 }
 
-
-module.exports = { CaminhaoController };
+module.exports = { OficinaController };

@@ -10,7 +10,8 @@ class CaminhaoModel extends Model {
                 allowNull: false
             },
             modelo: DataTypes.TEXT,
-            ano: DataTypes.DATEONLY
+            ano: DataTypes.DATEONLY,
+            placa: DataTypes.TEXT
         }, {
             tableName: 'Caminhao',
             modelName: 'CaminhaoModel',

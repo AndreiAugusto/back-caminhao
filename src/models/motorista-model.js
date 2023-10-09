@@ -10,7 +10,8 @@ class MotoristaModel extends Model {
                 allowNull: false
             },
             nomeMotorista: DataTypes.TEXT,
-            nascimento: DataTypes.DATEONLY
+            nascimento: DataTypes.DATEONLY,
+            nCarteira: DataTypes.TEXT
         }, {
             tableName: 'Motorista',
             modelName: 'MotoristaModel',

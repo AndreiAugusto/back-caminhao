@@ -11,7 +11,7 @@ module.exports = {
         unique: true,
         autoIncrement: true
       },
-      nomeMotorista: {
+      nomeOficina: {
         type: Sequelize.TEXT,
         allowNull: false,
       }

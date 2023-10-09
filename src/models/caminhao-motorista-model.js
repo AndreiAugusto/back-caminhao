@@ -9,7 +9,7 @@ class CaminhaoMotoristaModel extends Model {
                 autoIncrement: true,
                 allowNull: false
             },
-            dataInicio: DataTypes.DATEONLY,
+            data: DataTypes.DATEONLY,
             motoristaId: DataTypes.INTEGER,
             caminhaoId: DataTypes.INTEGER
         }, {

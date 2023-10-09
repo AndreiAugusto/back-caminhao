@@ -18,6 +18,11 @@ module.exports = {
       nascimento: {
         type: Sequelize.DATEONLY,
         allowNull: false
+      },
+      nCarteira:{
+        type: Sequelize.TEXT,
+        allowNull: false,
+        unique: true
       }
      });
   },

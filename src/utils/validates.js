@@ -4,11 +4,6 @@ class Validates {
         return dateFormated.toString() !== 'Invalid Date' && dateFormated <= new Date();
     }
 
-    static validCNPJ(cnpj) {
-        const regexCNPj = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
-        return regexCNPj.test(cnpj);
-    }
-
     static validHour(hour) {
         const hourFormated = hour.split(':');
         return hourFormated.length === 3 &&
@@ -18,17 +13,6 @@ class Validates {
             hourFormated[1] >= 0 &&
             hourFormated[2] < 60 &&
             hourFormated[2] >= 0;
-    }
-
-    static validTurn(turn) {
-        return turn === 'M' || turn === 'V' || turn === 'N';
-    }
-
-    static validUnity(unity) {
-        return unity === 'Grama' ||
-            unity === 'Kilograma' ||
-            unity === 'Mililitro' ||
-            unity === 'Litro';
     }
 }
 
