@@ -10,6 +10,7 @@ const { routesMotorista } = require('./routes/motorista-route');
 const { routesOficina } = require('./routes/oficina-route');
 const { routesManutencao } = require('./routes/manutencao-route');
 const { routesCaminhaoMotorista } = require('./routes/caminhao-motorista-route');
+const { routesDashboard } = require('./routes/dashboard-route');
 
 const server = express();
 
@@ -22,6 +23,7 @@ server.use(routesMotorista);
 server.use(routesOficina);
 server.use(routesManutencao);
 server.use(routesCaminhaoMotorista);
+server.use(routesDashboard);
 
 const PORT = 8080;
 server.listen(PORT, () => {

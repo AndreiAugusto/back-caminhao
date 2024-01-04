@@ -41,10 +41,37 @@ class ManutencaoController {
             const ordenacao = request.query.ordenacao;
             let ordenacaoOpcoes = [['id', 'DESC']];
 
-            if (ordenacao === 'crescente') {
-              ordenacaoOpcoes = [['id', 'ASC']];
-            } else {
-              ordenacaoOpcoes = [['id', 'DESC']];
+            switch (ordenacao) {
+                case 'crescente':
+                    ordenacaoOpcoes = [['id', 'ASC']];
+                    break;
+                case 'custoAsc':
+                    ordenacaoOpcoes = [['custo', 'ASC']];
+                    break;
+                case 'custoDesc':
+                    ordenacaoOpcoes = [['custo', 'DESC']];
+                    break;
+                case 'dataAsc':
+                    ordenacaoOpcoes = [['data', 'ASC']];
+                    break;
+                case 'dataDesc':
+                    ordenacaoOpcoes = [['data', 'DESC']];
+                    break;
+                case 'caminhaoAsc':
+                    ordenacaoOpcoes = [['caminhaoId', 'ASC']];
+                    break;
+                case 'caminhaoDesc':
+                    ordenacaoOpcoes = [['caminhaoId', 'DESC']];
+                    break;
+                case 'oficinaAsc':
+                    ordenacaoOpcoes = [['oficinaId', 'ASC']];
+                    break;
+                case 'oficinaDesc':
+                    ordenacaoOpcoes = [['oficinaId', 'DESC']];
+                    break;
+                default:
+                    ordenacaoOpcoes = [['id', 'DESC']];
+                    break;
             }
             const manutencoes = await ManutencaoModel.findAll({
                 order: ordenacaoOpcoes
